@@ -15,25 +15,27 @@ Or install from command line
 
 ## Examples
 
-    require 'phandoc'
+```ruby
+require 'phandoc'
 
-    doc = Phandoc.new <<-HTML
-      <html>
-        <head></head>
-        <body>
-          <div id="test">foo</div>
-        </body>
-      </html>
-    HTML
+doc = Phandoc.new <<-HTML
+  <html>
+    <head></head>
+    <body>
+      <div id="test">foo</div>
+    </body>
+  </html>
+HTML
 
-    result = doc.execute <<-SCRIPT
-      document.getElementById("test").innerHTML = "bar";
-      'baaaaaar!';
-    SCRIPT
+result = doc.execute <<-SCRIPT
+  document.getElementById("test").innerHTML = "bar";
+  'baaaaaar!';
+SCRIPT
 
-    puts doc.html # output: ... <div id="test">bar</div> ...
-    puts result   # output: baaaaaar!
+puts doc.html # output: ... <div id="test">bar</div> ...
+puts result   # output: baaaaaar!
+```
 
 ## License
 
-MIT License, please read [LICENSE][] file
+MIT License, please read `LICENSE` file
