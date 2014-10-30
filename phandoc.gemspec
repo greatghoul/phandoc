@@ -10,5 +10,5 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/greatghoul/phandoc'
   s.license     = 'MIT'
 
-  s.add_development_dependency 'phantomjs'
+  s.add_development_dependency 'phantomjs', '~> 0'
 end
