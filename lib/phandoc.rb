@@ -12,9 +12,9 @@ class Phandoc
   def execute(code, settings={})
     result = []
     
-    html_file = Tempfile.new('phantom_html')
-    js_file   = Tempfile.new('phantom_js')
-    script_file = Tempfile.new('phantom_script')
+    html_file = Tempfile.new(['phantom_html', '.html'])
+    js_file   = Tempfile.new(['phantom_js', '.js'])
+    script_file = Tempfile.new(['phantom_script', '.js'])
 
     begin
       html_file.write(self.html)
@@ -25,23 +25,24 @@ class Phandoc
 
       self.script = <<-JAVASCRIPT
         var fs = require('fs');
-        var htmlContent = fs.read('#{html_file.path}');
+        var filename = '#{html_file.path}';
         var jsContent = fs.read('#{js_file.path}');
         var settings = #{settings.to_json};
 
-        var webpage = require('webpage');
-        var page = webpage.create(settings);
+        var page = require('webpage').create();
+        
+        #{settings_code(settings)}
 
-        page.content = htmlContent;
+        page.open(filename, function(status) {
+          var output = page.evaluate(function(script) {
+            return eval(script);
+          }, jsContent);
 
-        var output = page.evaluate(function(script) {
-          return eval(script);
-        }, jsContent);
+          console.log(output);
+          console.log(page.content.replace(/^/mg, '[:PHANDOC_SOURCE:] '));
 
-        console.log(output);
-        console.log(page.content.replace(/^/mg, '[:PHANDOC_SOURCE:] '));
-
-        phantom.exit();
+          phantom.exit();
+        });
       JAVASCRIPT
       script_file.write self.script
       script_file.flush
