@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    phandoc (0.0.1)
+    phandoc (0.0.2)
+      phantomjs (~> 1.9.7.0)
 
 GEM
   remote: https://rubygems.org/
@@ -26,5 +27,4 @@ PLATFORMS
 
 DEPENDENCIES
   phandoc!
-  phantomjs
   rspec (~> 3.1.0)
